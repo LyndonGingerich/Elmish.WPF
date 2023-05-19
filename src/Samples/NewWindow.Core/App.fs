@@ -57,7 +57,7 @@ module App =
       | InOut.Out Window2OutMsg.Close -> Window2Close
 
     "Window2" |> Binding.subModelWin(
-      (fun app -> app.Window2) >> WindowState.ofOption,
+      (fun app -> app.Window2 |> WindowState.ofOption),
       snd,
       mapWindow2Msg,
       Window2.bindings,
