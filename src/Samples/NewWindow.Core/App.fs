@@ -24,22 +24,22 @@ type AppMsg =
 
 module App =
   module Window1 =
-    let map = map (fun app -> app.Window1) (fun v app -> { app with Window1 = v })
+    let lens = lens (fun app -> app.Window1) (fun v app -> { app with Window1 = v })
   module Window2 =
-    let map = map (fun app -> app.Window2) (fun v app -> { app with Window2 = v })
+    let lens = lens (fun app -> app.Window2) (fun v app -> { app with Window2 = v })
 
   let init =
     { Window1 = WindowState.Closed
       Window2 = None }
 
   let update = function
-    | Window1Show -> "" |> WindowState.toVisible |> Window1.map
-    | Window1Hide -> "" |> WindowState.toHidden  |> Window1.map
+    | Window1Show -> "" |> WindowState.toVisible |> Window1.lens
+    | Window1Hide -> "" |> WindowState.toHidden  |> Window1.lens
     | Window1Close -> fun app -> { app with Window1 = WindowState.Closed }
-    | Window1SetInput s -> s |> WindowState.set |> Window1.map
+    | Window1SetInput s -> s |> WindowState.set |> Window1.lens
     | Window2Show -> Window2.init |> Some |> fun v app -> { app with Window2 = v }
     | Window2Close -> fun app -> { app with Window2 = None }
-    | Window2Msg msg -> msg |> Window2.update |> Option.map |> Window2.map
+    | Window2Msg msg -> msg |> Window2.update |> Option.map |> Window2.lens
 
   let bindings (createWindow1: unit -> #Window) (createWindow2: unit -> #Window) () = [
     "Window1Show" |> Binding.cmd Window1Show

@@ -2,7 +2,7 @@
 module AutoOpen
 
 
-let map get set f a =
+let lens get set f a =
   a |> get |> f |> set <| a
 
 
