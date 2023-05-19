@@ -11,10 +11,7 @@ module Bool =
     | false -> Visibility.Collapsed
 
 
-[<AutoOpen>]
-module InOutModule =
-
-  [<RequireQualifiedAccess>]
-  type InOut<'a, 'b> =
-    | In of 'a
-    | Out of 'b
+[<RequireQualifiedAccess>]
+type InOut<'a, 'b> =
+  | In of 'a
+  | Out of 'b
