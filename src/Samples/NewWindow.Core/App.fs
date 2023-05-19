@@ -31,9 +31,6 @@ module App =
     let get m = m.Window2
     let set v m = { m with Window2 = v }
     let map = map get set
-    let mapOutMsg = function
-      | Window2OutMsg.Close -> Window2Close
-    let mapInOutMsg = InOut.cata Window2Msg mapOutMsg
 
   let init =
     { Window1 = WindowState.Closed
@@ -59,10 +56,16 @@ module App =
       id,
       Window1.bindings >> Bindings.mapMsg Window1SetInput,
       createWindow1)
+
+    let mapWindow2Msg = // can't detect correct overload of `subModelWin` if inlined
+      function
+      | InOut.In inMsg -> inMsg |> Window2Msg
+      | InOut.Out Window2OutMsg.Close -> Window2Close
+
     "Window2" |> Binding.subModelWin(
       Window2.get >> WindowState.ofOption,
       snd,
-      Window2.mapInOutMsg,
+      mapWindow2Msg,
       Window2.bindings,
       createWindow2,
       isModal = true)
