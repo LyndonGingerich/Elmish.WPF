@@ -24,12 +24,12 @@ type AppMsg =
 
 module App =
   module Window1 =
-    let get m = m.Window1
-    let set v m = { m with Window1 = v }
+    let get app = app.Window1
+    let set v app = { app with Window1 = v }
     let map = map get set
   module Window2 =
-    let get m = m.Window2
-    let set v m = { m with Window2 = v }
+    let get app = app.Window2
+    let set v app = { app with Window2 = v }
     let map = map get set
 
   let init =
@@ -51,7 +51,7 @@ module App =
     "Window1Close" |> Binding.cmd Window1Close
     "Window2Show" |> Binding.cmd Window2Show
     "Window1" |> Binding.subModelWin(
-      (fun m -> m.Window1),
+      (fun app -> app.Window1),
       snd,
       id,
       Window1.bindings >> Bindings.mapMsg Window1SetInput,
