@@ -24,13 +24,9 @@ type AppMsg =
 
 module App =
   module Window1 =
-    let get app = app.Window1
-    let set v app = { app with Window1 = v }
-    let map = map get set
+    let map = map (fun app -> app.Window1) (fun v app -> { app with Window1 = v })
   module Window2 =
-    let get app = app.Window2
-    let set v app = { app with Window2 = v }
-    let map = map get set
+    let map = map (fun app -> app.Window2) (fun v app -> { app with Window2 = v })
 
   let init =
     { Window1 = WindowState.Closed
@@ -39,10 +35,10 @@ module App =
   let update = function
     | Window1Show -> "" |> WindowState.toVisible |> Window1.map
     | Window1Hide -> "" |> WindowState.toHidden  |> Window1.map
-    | Window1Close -> WindowState.Closed |> Window1.set
+    | Window1Close -> fun app -> { app with Window1 = WindowState.Closed }
     | Window1SetInput s -> s |> WindowState.set |> Window1.map
-    | Window2Show -> Window2.init |> Some |> Window2.set
-    | Window2Close -> None |> Window2.set
+    | Window2Show -> Window2.init |> Some |> fun v app -> { app with Window2 = v }
+    | Window2Close -> fun app -> { app with Window2 = None }
     | Window2Msg msg -> msg |> Window2.update |> Option.map |> Window2.map
 
   let bindings (createWindow1: unit -> #Window) (createWindow2: unit -> #Window) () = [
@@ -63,7 +59,7 @@ module App =
       | InOut.Out Window2OutMsg.Close -> Window2Close
 
     "Window2" |> Binding.subModelWin(
-      Window2.get >> WindowState.ofOption,
+      (fun app -> app.Window2) >> WindowState.ofOption,
       snd,
       mapWindow2Msg,
       Window2.bindings,
