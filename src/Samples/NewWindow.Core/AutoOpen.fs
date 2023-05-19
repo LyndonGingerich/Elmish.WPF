@@ -18,10 +18,3 @@ module InOutModule =
   type InOut<'a, 'b> =
     | In of 'a
     | Out of 'b
-
-  [<RequireQualifiedAccess>]
-  module InOut =
-
-    let cata f g = function
-      | InOut.In  msg -> msg |> f
-      | InOut.Out msg -> msg |> g
