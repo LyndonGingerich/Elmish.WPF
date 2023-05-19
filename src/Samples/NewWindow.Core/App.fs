@@ -68,5 +68,6 @@ module App =
       isModal = true)
   ]
 
-let private fail _ = failwith "never called"
-let designVm = ViewModel.designInstance App.init (App.bindings fail fail ())
+let designVm =
+  let fail _ = failwith "never called"
+  ViewModel.designInstance App.init (App.bindings fail fail ())
