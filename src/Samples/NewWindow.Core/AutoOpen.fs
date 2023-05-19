@@ -2,9 +2,6 @@
 module AutoOpen
 
 
-let lens get set f a =
-  a |> get |> f |> set <| a
-
 
 [<RequireQualifiedAccess>]
 module Bool =
