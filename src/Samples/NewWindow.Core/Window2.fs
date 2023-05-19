@@ -29,24 +29,21 @@ type Window2OutMsg =
 module Window2 =
   module Input =
     let get m = m.Input
-    let set v m = { m with Input = v }
   module IsChecked =
     let get m = m.IsChecked
-    let set v m = { m with IsChecked = v }
-  module ConfirmState =
-    let set v m = { m with ConfirmState = v }
 
   let init =
     { Input = ""
       IsChecked = false
       ConfirmState = None }
 
-  let update = function
-    | SetInput s -> s |> Input.set
-    | SetChecked b -> b |> IsChecked.set
-    | Submit -> ConfirmState.Submit |> Some |> ConfirmState.set
-    | Cancel -> ConfirmState.Cancel |> Some |> ConfirmState.set
-    | Close  -> ConfirmState.Close  |> Some |> ConfirmState.set
+  let update msg window2 =
+    match msg with
+    | SetInput s -> { window2 with Input = s }
+    | SetChecked b -> { window2 with IsChecked = b }
+    | Submit -> { window2 with ConfirmState = ConfirmState.Submit |> Some }
+    | Cancel -> { window2 with ConfirmState = ConfirmState.Cancel |> Some }
+    | Close  -> { window2 with ConfirmState = ConfirmState.Close  |> Some }
 
   let private confirmStateVisibilityBinding confirmState =
     fun m -> m.ConfirmState = Some confirmState
