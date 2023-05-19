@@ -27,11 +27,6 @@ type Window2OutMsg =
 
 
 module Window2 =
-  module Input =
-    let get m = m.Input
-  module IsChecked =
-    let get m = m.IsChecked
-
   let init =
     { Input = ""
       IsChecked = false
@@ -57,8 +52,8 @@ module Window2 =
 
   let bindings () =
     let inBindings =
-      [ "Input" |> Binding.twoWay (Input.get, SetInput)
-        "IsChecked" |> Binding.twoWay (IsChecked.get, SetChecked)
+      [ "Input" |> Binding.twoWay ((fun window2 -> window2.Input), SetInput)
+        "IsChecked" |> Binding.twoWay ((fun window2 -> window2.IsChecked), SetChecked)
         "SubmitMsgVisibility" |> confirmStateVisibilityBinding ConfirmState.Submit
         "CancelMsgVisibility" |> confirmStateVisibilityBinding ConfirmState.Cancel
         "CloseMsgVisibility"  |> confirmStateVisibilityBinding ConfirmState.Close ]
