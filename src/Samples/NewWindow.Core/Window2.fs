@@ -40,10 +40,8 @@ module Window2 =
     | Cancel -> { window2 with ConfirmState = ConfirmState.Cancel |> Some }
     | Close  -> { window2 with ConfirmState = ConfirmState.Close  |> Some }
 
-  let private confirmStateVisibilityBinding confirmState =
-    fun m -> m.ConfirmState = Some confirmState
-    >> Bool.toVisibilityCollapsed
-    |> Binding.oneWay
+  let private confirmStateVisibilityBinding confirmState bindingName =
+    bindingName |> Binding.oneWay (fun m -> m.ConfirmState = Some confirmState |> Bool.toVisibilityCollapsed)
 
   let private confirmStateToMsg confirmState msg m =
     if m.ConfirmState = Some confirmState
